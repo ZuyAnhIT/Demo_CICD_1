@@ -11,3 +11,33 @@ pipeline {
 
   } // end stages
 }//end pipeline
+
+        stage('restore package') {
+		steps
+		{
+			echo 'Restore package'
+			bat 'dotnet restore'
+		}
+	}
+
+        stage ('build') {
+		steps {
+			echo 'build project netcore'
+			bat 'dotnet build  --configuration Release'
+		}
+	}
+
+        stage ('tests') {
+		steps{
+			echo 'running test...'
+			bat 'dotnet test --no-build --verbosity normal'
+		}
+	}
+
+        stage ('public den t thu muc')
+	{
+		steps{
+			echo 'Publishing...'
+			bat 'dotnet publish -c Release -o ./publish'
+		}
+	}
