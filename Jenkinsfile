@@ -37,13 +37,26 @@ pipeline {
             }
         }
 
+        stage('Copy to IIS folder') {
+            steps {
+                echo 'Copying publish to IIS folder...'
+                bat '''
+                    iisreset /stop
+                    rd /S /Q "C:\\wwwroot\\HelloJenkins_1"
+                    mkdir "C:\\wwwroot\\HelloJenkins_1"
+                    xcopy "%WORKSPACE%\\publish" "C:\\wwwroot\\HelloJenkins_1" /E /I /Y /R
+                '''
+            }
+        }
+
         stage('Deploy to IIS') {
             steps {
-                echo 'Copying to IIS folder...'
-                bat '''
-                    rd /S /Q "C:\\wwwroot\\Demo_CICD_1"
-                    mkdir "C:\\wwwroot\\Demo_CICD_1"
-                    xcopy /E /I /Y "publish\\*" "C:\\wwwroot\\Demo_CICD_1"
+                echo 'Creating IIS website (if not exists)...'
+                powershell '''
+                    Import-Module WebAdministration
+                    if (-not (Test-Path IIS:\\Sites\\HelloJenkins_1)) {
+                        New-Website -Name "HelloJenkins_1" -Port 85 -PhysicalPath "C:\\wwwroot\\HelloJenkins_1" -ApplicationPool "DefaultAppPool"
+                    }
                 '''
             }
         }
