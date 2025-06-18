@@ -96,3 +96,4 @@ C:\Users\Duy Anh\source\repos\HelloJenkins_1\HelloJenkins_1\obj\Debug\net9.0\ref
 C:\Users\Duy Anh\source\repos\HelloJenkins_1\HelloJenkins_1\obj\Debug\net9.0\HelloJenkins_1.pdb
 C:\Users\Duy Anh\source\repos\HelloJenkins_1\HelloJenkins_1\obj\Debug\net9.0\HelloJenkins_1.genruntimeconfig.cache
 C:\Users\Duy Anh\source\repos\HelloJenkins_1\HelloJenkins_1\obj\Debug\net9.0\ref\HelloJenkins_1.dll
+C:\Users\Duy Anh\source\repos\HelloJenkins_1\HelloJenkins_1\obj\Debug\net9.0\HelloJenkins_1.sourcelink.json
