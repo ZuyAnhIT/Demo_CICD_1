@@ -1,43 +1,51 @@
 pipeline {
- agent any
- 
- stages {
-	stage('clone'){
-		steps {
-			echo 'Cloning source code'
-			git branch:'main', url: 'https://github.com/ZuyAnhIT/Demo_CICD_1.git'
-		}
-	} // end clone
+    agent any
 
-  } // end stages
-}//end pipeline
+    stages {
+        stage('Clone') {
+            steps {
+                echo 'Cloning source code...'
+                git branch: 'main', url: 'https://github.com/ZuyAnhIT/Demo_CICD_1.git'
+            }
+        }
 
-        stage('restore package') {
-		steps
-		{
-			echo 'Restore package'
-			bat 'dotnet restore'
-		}
-	}
+        stage('Restore Packages') {
+            steps {
+                echo 'Restoring NuGet packages...'
+                bat 'dotnet restore'
+            }
+        }
 
-        stage ('build') {
-		steps {
-			echo 'build project netcore'
-			bat 'dotnet build  --configuration Release'
-		}
-	}
+        stage('Build') {
+            steps {
+                echo 'Building the project...'
+                bat 'dotnet build --configuration Release'
+            }
+        }
 
-        stage ('tests') {
-		steps{
-			echo 'running test...'
-			bat 'dotnet test --no-build --verbosity normal'
-		}
-	}
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+                bat 'dotnet test --no-build --verbosity normal'
+            }
+        }
 
-        stage ('public den t thu muc')
-	{
-		steps{
-			echo 'Publishing...'
-			bat 'dotnet publish -c Release -o ./publish'
-		}
-	}
+        stage('Publish') {
+            steps {
+                echo 'Publishing project...'
+                bat 'dotnet publish -c Release -o ./publish'
+            }
+        }
+
+        stage('Deploy to IIS') {
+            steps {
+                echo 'Copying to IIS folder...'
+                bat '''
+                    rd /S /Q "C:\\wwwroot\\Demo_CICD_1"
+                    mkdir "C:\\wwwroot\\Demo_CICD_1"
+                    xcopy /E /I /Y "publish\\*" "C:\\wwwroot\\Demo_CICD_1"
+                '''
+            }
+        }
+    }
+}
